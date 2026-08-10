@@ -1,0 +1,118 @@
+/* GreenDC Advisor — styles rapport / impression */
+
+.print-body {
+    background: #eef2f0;
+}
+
+.print-toolbar {
+    background: #fff;
+    border-bottom: 1px solid rgba(15, 61, 46, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.print-document {
+    background: #fff;
+    max-width: 960px;
+    box-shadow: 0 10px 40px rgba(15, 61, 46, 0.08);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.report-brand {
+    color: #1b7a4e;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.35rem;
+}
+
+.report-header {
+    border-bottom: 3px solid #1b7a4e;
+    padding-bottom: 1rem;
+}
+
+.report-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #145c3b;
+    border-left: 4px solid #1a5f8a;
+    padding-left: 0.65rem;
+    margin-bottom: 1rem;
+}
+
+.report-section {
+    page-break-inside: avoid;
+}
+
+.kpi-box {
+    background: #f3f7f5;
+    border: 1px solid rgba(27, 122, 78, 0.12);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    text-align: center;
+}
+
+.kpi-box .label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #64748b;
+}
+
+.kpi-box .value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f3d2e;
+}
+
+.report-table thead th {
+    background: #f8fafc;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.report-footer {
+    border-top: 1px solid #e2e8f0;
+}
+
+.reco-badge-haute { background: #dc3545; color: #fff; }
+.reco-badge-moyenne { background: #ffc107; color: #212529; }
+.reco-badge-basse { background: #6c757d; color: #fff; }
+
+.report-reco-list {
+    padding-left: 1.2rem;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .print-body {
+        background: #fff;
+    }
+
+    .print-document {
+        box-shadow: none;
+        max-width: 100%;
+        border-radius: 0;
+        margin: 0;
+        padding: 0 !important;
+    }
+
+    .report-section,
+    .avoid-break {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    a {
+        text-decoration: none !important;
+        color: inherit !important;
+    }
+
+    .badge {
+        border: 1px solid #ccc;
+    }
+}

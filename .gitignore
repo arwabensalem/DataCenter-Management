@@ -1,0 +1,19 @@
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Env / secrets locaux (garder db.php versionné pour XAMPP démo)
+.env
+.env.local
+
+# Logs & cache
+*.log
+/tmp/
+/cache/
