@@ -6,6 +6,18 @@ use App\Helpers\Security;
 
 $app = require dirname(__DIR__, 2) . '/config/app.php';
 $baseUrl = rtrim((string) $app['url'], '/');
+
+// Lang optionnel (si le helper i18n est présent)
+$subtitle = 'Aide à la décision énergétique pour Data Centers';
+$emailLabel = 'Adresse e-mail';
+$passwordLabel = 'Mot de passe';
+$submitLabel = 'Se connecter';
+if (class_exists(\App\Helpers\Lang::class)) {
+    $subtitle = \App\Helpers\Lang::t('auth.subtitle');
+    $emailLabel = \App\Helpers\Lang::t('auth.email');
+    $passwordLabel = \App\Helpers\Lang::t('auth.password');
+    $submitLabel = \App\Helpers\Lang::t('auth.submit');
+}
 ?>
 <div class="row justify-content-center">
     <div class="col-md-5 col-lg-4">
@@ -15,7 +27,7 @@ $baseUrl = rtrim((string) $app['url'], '/');
                     <i class="fa-solid fa-solar-panel"></i>
                 </div>
                 <h1 class="h4 fw-bold text-brand mb-1">GreenDC Advisor</h1>
-                <p class="text-muted small mb-0">Aide à la décision énergétique pour Data Centers</p>
+                <p class="text-muted small mb-0"><?= Security::e($subtitle) ?></p>
             </div>
 
             <?php if (!empty($error)): ?>
@@ -29,7 +41,7 @@ $baseUrl = rtrim((string) $app['url'], '/');
                 <?= Security::csrfField() ?>
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">Adresse e-mail</label>
+                    <label for="email" class="form-label"><?= Security::e($emailLabel) ?></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
                         <input type="email" class="form-control" id="email" name="email"
@@ -38,7 +50,7 @@ $baseUrl = rtrim((string) $app['url'], '/');
                 </div>
 
                 <div class="mb-4">
-                    <label for="password" class="form-label">Mot de passe</label>
+                    <label for="password" class="form-label"><?= Security::e($passwordLabel) ?></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
                         <input type="password" class="form-control" id="password" name="password"
@@ -47,13 +59,9 @@ $baseUrl = rtrim((string) $app['url'], '/');
                 </div>
 
                 <button type="submit" class="btn btn-brand w-100 py-2">
-                    <i class="fa-solid fa-right-to-bracket me-1"></i> Se connecter
+                    <i class="fa-solid fa-right-to-bracket me-1"></i> <?= Security::e($submitLabel) ?>
                 </button>
             </form>
-
-            <p class="text-center text-muted small mt-4 mb-0">
-                Plateforme sécurisée — rôles Administrateur &amp; Client
-            </p>
         </div>
     </div>
 </div>

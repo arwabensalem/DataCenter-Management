@@ -19,12 +19,7 @@ $dcId = (int) ($aiInsights['data_center_id'] ?? 0);
 ?>
 <div class="ai-insights-card mb-4">
     <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
-        <h3 class="mb-0"><i class="fa-solid fa-robot me-1"></i> AI Insights</h3>
-        <?php if (!empty($aiInsights['fallback'])): ?>
-            <span class="badge bg-soft-blue text-dark">Analyse déterministe</span>
-        <?php else: ?>
-            <span class="badge bg-success">Enrichi RAG</span>
-        <?php endif; ?>
+        <h3 class="mb-0"><i class="fa-solid fa-lightbulb me-1"></i> Synthèse</h3>
     </div>
     <?php if (!empty($aiInsights['data_center_name'])): ?>
         <p class="small text-muted mb-2">
@@ -34,12 +29,12 @@ $dcId = (int) ($aiInsights['data_center_id'] ?? 0);
 
     <div class="ai-metric-row">
         <div class="ai-metric">
-            <div class="label">⚡ Consommation</div>
+            <div class="label">Consommation</div>
             <div class="value"><?= Security::e($fmt((float) ($aiInsights['total_energy_kwh'] ?? 0))) ?>
                 <small class="fw-normal">kWh</small></div>
         </div>
         <div class="ai-metric">
-            <div class="label">📊 PUE</div>
+            <div class="label">PUE</div>
             <div class="value">
                 <?= isset($aiInsights['pue']) && $aiInsights['pue'] !== null
                     ? Security::e(number_format((float) $aiInsights['pue'], 2, ',', ''))
@@ -47,15 +42,15 @@ $dcId = (int) ($aiInsights['data_center_id'] ?? 0);
             </div>
         </div>
         <div class="ai-metric">
-            <div class="label">❄️ Cooling</div>
+            <div class="label">Cooling</div>
             <div class="value"><?= Security::e(number_format((float) ($aiInsights['cooling_share_pct'] ?? 0), 1, ',', '')) ?> %</div>
         </div>
         <div class="ai-metric">
-            <div class="label">☀️ PV Coverage</div>
+            <div class="label">Couverture PV</div>
             <div class="value"><?= Security::e(number_format((float) ($aiInsights['pv_coverage_pct'] ?? 0), 1, ',', '')) ?> %</div>
         </div>
         <div class="ai-metric">
-            <div class="label">🌱 CO₂ évité</div>
+            <div class="label">CO₂ évité</div>
             <div class="value"><?= Security::e($fmt((float) ($aiInsights['co2_avoided_kg'] ?? 0), 0)) ?>
                 <small class="fw-normal">kg</small></div>
         </div>
@@ -80,10 +75,10 @@ $dcId = (int) ($aiInsights['data_center_id'] ?? 0);
                 Voir l'analyse complète
             </a>
             <a href="<?= Security::e(Url::to('ai?dc=' . $dcId)) ?>" class="btn btn-outline-secondary btn-sm">
-                Ouvrir le chat AI
+                Poser une question
             </a>
         <?php else: ?>
-            <a href="<?= Security::e(Url::to('ai')) ?>" class="btn btn-brand btn-sm">Ouvrir AI Advisor</a>
+            <a href="<?= Security::e(Url::to('ai')) ?>" class="btn btn-brand btn-sm">Conseil énergétique</a>
         <?php endif; ?>
     </div>
 </div>

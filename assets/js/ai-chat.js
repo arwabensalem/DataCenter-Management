@@ -22,31 +22,57 @@
         return d.innerHTML;
     }
 
-    function appendMessage(role, htmlContent, meta) {
+    /** Markdown léger → HTML (échappé d'abord). */
+    function formatAnswer(text) {
+        let s = esc(text || '');
+        // Blocs de code
+        s = s.replace(/```[\s\S]*?```/g, function (block) {
+            const inner = block.replace(/^```\w*\n?/, '').replace(/```$/, '');
+            return '<pre class="ai-code"><code>' + inner.trim() + '</code></pre>';
+        });
+        // Titres
+        s = s.replace(/^######\s+(.+)$/gm, '<h6 class="ai-h">$1</h6>');
+        s = s.replace(/^#####\s+(.+)$/gm, '<h6 class="ai-h">$1</h6>');
+        s = s.replace(/^####\s+(.+)$/gm, '<h6 class="ai-h">$1</h6>');
+        s = s.replace(/^###\s+(.+)$/gm, '<h5 class="ai-h">$1</h5>');
+        s = s.replace(/^##\s+(.+)$/gm, '<h5 class="ai-h">$1</h5>');
+        s = s.replace(/^#\s+(.+)$/gm, '<h5 class="ai-h">$1</h5>');
+        // Gras / italique
+        s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        s = s.replace(/__(.+?)__/g, '<strong>$1</strong>');
+        s = s.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
+        // Listes
+        s = s.replace(/^\s*[-•]\s+(.+)$/gm, '<li>$1</li>');
+        s = s.replace(/^\s*\d+\.\s+(.+)$/gm, '<li>$1</li>');
+        s = s.replace(/(?:<li>[\s\S]*?<\/li>\s*)+/g, function (block) {
+            return '<ul class="ai-list mb-2">' + block.replace(/\n/g, '') + '</ul>';
+        });
+        // Citations
+        s = s.replace(/^&gt;\s?(.+)$/gm, '<blockquote class="ai-quote">$1</blockquote>');
+        // Paragraphes / sauts de ligne
+        s = s.replace(/\n{2,}/g, '</p><p class="ai-p">');
+        s = s.replace(/\n/g, '<br>');
+        if (!/^<[hul]/.test(s.trim())) {
+            s = '<p class="ai-p">' + s + '</p>';
+        }
+        return s;
+    }
+
+    function appendMessage(role, content, meta) {
         const wrap = document.createElement('div');
         wrap.className = 'ai-msg ' + (role === 'user' ? 'ai-msg-user' : 'ai-msg-bot');
         let sourcesHtml = '';
         if (meta && meta.sources && meta.sources.length) {
-            sourcesHtml = '<div class="ai-sources-inline mt-2"><strong class="small">Sources</strong><ul class="small mb-0">';
+            sourcesHtml = '<div class="ai-sources-inline mt-2"><div class="small text-muted fw-semibold mb-1">Références</div><ul class="small mb-0">';
             meta.sources.forEach(function (s) {
                 const title = s.title || s.file || 'Document';
                 const page = s.page ? ' — p.' + s.page : '';
-                sourcesHtml += '<li>📄 ' + esc(title) + page + '</li>';
+                sourcesHtml += '<li>' + esc(title) + page + '</li>';
             });
             sourcesHtml += '</ul></div>';
         }
-        let badge = '';
-        if (meta && meta.fallback) {
-            badge = '<span class="badge bg-warning text-dark ms-1">fallback</span>';
-        } else if (meta && meta.llm) {
-            badge = '<span class="badge bg-success ms-1">LLM</span>';
-        }
-        wrap.innerHTML =
-            '<div class="ai-msg-bubble">' +
-            htmlContent +
-            badge +
-            sourcesHtml +
-            '</div>';
+        const body = role === 'user' ? esc(content) : formatAnswer(content);
+        wrap.innerHTML = '<div class="ai-msg-bubble">' + body + sourcesHtml + '</div>';
         messagesEl.appendChild(wrap);
         messagesEl.scrollTop = messagesEl.scrollHeight;
     }
@@ -63,7 +89,7 @@
         if (q.length < 3) return;
 
         const dcId = dcSelect ? parseInt(dcSelect.value, 10) : 0;
-        appendMessage('user', esc(q));
+        appendMessage('user', q);
         input.value = '';
         setLoading(true);
 
@@ -82,19 +108,16 @@
             });
             const data = await res.json();
             if (!res.ok) {
-                appendMessage('bot', esc(data.error || 'Erreur serveur'));
+                appendMessage('bot', data.error || 'Erreur serveur');
                 return;
             }
-            const answerHtml = esc(data.answer || '').replace(/\n/g, '<br>');
-            appendMessage('bot', answerHtml, {
+            appendMessage('bot', data.answer || '', {
                 sources: data.sources || [],
-                fallback: !!data.fallback,
-                llm: !!(data.metrics && data.metrics.llm_used),
             });
         } catch (e) {
             appendMessage(
                 'bot',
-                'Impossible de joindre le service. Affichage possible en mode fallback au prochain essai.'
+                'Le service d\'analyse est temporairement indisponible. Réessayez dans un instant.'
             );
         } finally {
             setLoading(false);
@@ -122,7 +145,9 @@
                     body: JSON.stringify({ _csrf: cfg.csrf, data_center_id: dcId }),
                 });
                 messagesEl.innerHTML =
-                    '<div class="ai-msg ai-msg-bot"><div class="ai-msg-bubble">Historique effacé. Posez une nouvelle question.</div></div>';
+                    '<div class="ai-msg ai-msg-bot"><div class="ai-msg-bubble">' +
+                    'Historique effacé. Posez une nouvelle question.' +
+                    '</div></div>';
             } catch (e) {
                 /* ignore */
             }

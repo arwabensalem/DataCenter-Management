@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Helpers\Auth;
+use App\Helpers\Lang;
 use App\Helpers\Security;
 use App\Helpers\Url;
 
@@ -10,9 +11,13 @@ $app = require dirname(__DIR__, 2) . '/config/app.php';
 $baseUrl = Url::base();
 $pageTitle = isset($title) ? $title . ' | ' . $app['name'] : $app['name'];
 $user = Auth::user();
+$currentPath = trim((string) ($_GET['url'] ?? 'dashboard'), '/');
+$langSwitch = static function (string $code) use ($currentPath): string {
+    return Url::to('lang/' . $code) . '?redirect=' . rawurlencode($currentPath !== '' ? $currentPath : 'dashboard');
+};
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= Security::e(Lang::htmlLang()) ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,50 +38,50 @@ $user = Auth::user();
         </div>
         <nav class="nav flex-column px-2">
             <a class="nav-link <?= Url::is('dashboard') ? 'active' : '' ?>" href="<?= Security::e(Url::to('dashboard')) ?>">
-                <i class="fa-solid fa-gauge-high me-2"></i> Tableau de bord
+                <i class="fa-solid fa-gauge-high me-2"></i> <?= Security::e(Lang::t('nav.dashboard')) ?>
             </a>
             <a class="nav-link <?= Url::is('entreprises') ? 'active' : '' ?>" href="<?= Security::e(Url::to('entreprises')) ?>">
                 <i class="fa-solid fa-building me-2"></i>
-                <?= Auth::isAdmin() ? 'Entreprises' : 'Mon entreprise' ?>
+                <?= Security::e(Auth::isAdmin() ? Lang::t('nav.companies') : Lang::t('nav.my_company')) ?>
             </a>
             <a class="nav-link <?= Url::is('data-centers') ? 'active' : '' ?>" href="<?= Security::e(Url::to('data-centers')) ?>">
-                <i class="fa-solid fa-server me-2"></i> Data Centers
+                <i class="fa-solid fa-server me-2"></i> <?= Security::e(Lang::t('nav.data_centers')) ?>
             </a>
             <a class="nav-link <?= Url::is('equipements') ? 'active' : '' ?>" href="<?= Security::e(Url::to('equipements')) ?>">
-                <i class="fa-solid fa-microchip me-2"></i> Équipements
+                <i class="fa-solid fa-microchip me-2"></i> <?= Security::e(Lang::t('nav.equipment')) ?>
             </a>
             <a class="nav-link <?= Url::is('photovoltaique') ? 'active' : '' ?>" href="<?= Security::e(Url::to('photovoltaique')) ?>">
-                <i class="fa-solid fa-sun me-2"></i> Photovoltaïque
+                <i class="fa-solid fa-sun me-2"></i> <?= Security::e(Lang::t('nav.pv')) ?>
             </a>
             <a class="nav-link <?= Url::is('simulations') ? 'active' : '' ?>" href="<?= Security::e(Url::to('simulations')) ?>">
-                <i class="fa-solid fa-flask me-2"></i> Simulations
+                <i class="fa-solid fa-flask me-2"></i> <?= Security::e(Lang::t('nav.simulations')) ?>
             </a>
             <a class="nav-link <?= Url::is('recommandations') ? 'active' : '' ?>" href="<?= Security::e(Url::to('recommandations')) ?>">
-                <i class="fa-solid fa-lightbulb me-2"></i> Recommandations
+                <i class="fa-solid fa-lightbulb me-2"></i> <?= Security::e(Lang::t('nav.recommendations')) ?>
             </a>
             <a class="nav-link <?= Url::is('rapports') ? 'active' : '' ?>" href="<?= Security::e(Url::to('rapports')) ?>">
-                <i class="fa-solid fa-file-lines me-2"></i> Rapports
+                <i class="fa-solid fa-file-lines me-2"></i> <?= Security::e(Lang::t('nav.reports')) ?>
             </a>
-            <span class="nav-section">Avancé</span>
+            <span class="nav-section"><?= Security::e(Lang::t('nav.advanced')) ?></span>
             <a class="nav-link <?= Url::is('carte') ? 'active' : '' ?>" href="<?= Security::e(Url::to('carte')) ?>">
-                <i class="fa-solid fa-map-location-dot me-2"></i> Carte énergétique
+                <i class="fa-solid fa-map-location-dot me-2"></i> <?= Security::e(Lang::t('nav.map')) ?>
             </a>
             <a class="nav-link <?= Url::is('scenarios') ? 'active' : '' ?>" href="<?= Security::e(Url::to('scenarios')) ?>">
-                <i class="fa-solid fa-code-compare me-2"></i> Scénarios
+                <i class="fa-solid fa-code-compare me-2"></i> <?= Security::e(Lang::t('nav.scenarios')) ?>
             </a>
             <a class="nav-link <?= Url::is('decision') ? 'active' : '' ?>" href="<?= Security::e(Url::to('decision')) ?>">
-                <i class="fa-solid fa-brain me-2"></i> Aide à la décision
+                <i class="fa-solid fa-brain me-2"></i> <?= Security::e(Lang::t('nav.decision')) ?>
             </a>
             <a class="nav-link <?= Url::is('ai') ? 'active' : '' ?>" href="<?= Security::e(Url::to('ai')) ?>">
-                <i class="fa-solid fa-robot me-2"></i> AI Advisor
+                <i class="fa-solid fa-comments me-2"></i> <?= Security::e(Lang::t('nav.ai')) ?>
             </a>
             <a class="nav-link <?= Url::is('exports') ? 'active' : '' ?>" href="<?= Security::e(Url::to('exports')) ?>">
-                <i class="fa-solid fa-file-export me-2"></i> Exports
+                <i class="fa-solid fa-file-export me-2"></i> <?= Security::e(Lang::t('nav.exports')) ?>
             </a>
         </nav>
         <div class="sidebar-footer mt-auto px-3 py-3">
             <a class="btn btn-outline-light btn-sm w-100" href="<?= Security::e(Url::to('logout')) ?>">
-                <i class="fa-solid fa-right-from-bracket me-1"></i> Déconnexion
+                <i class="fa-solid fa-right-from-bracket me-1"></i> <?= Security::e(Lang::t('nav.logout')) ?>
             </a>
         </div>
     </aside>
@@ -87,8 +92,12 @@ $user = Auth::user();
                 <h1 class="h5 mb-0"><?= Security::e($title ?? 'GreenDC Advisor') ?></h1>
             </div>
             <div class="d-flex align-items-center gap-3">
+                <div class="lang-switch" role="group" aria-label="<?= Security::e(Lang::t('lang.label')) ?>">
+                    <a class="lang-btn <?= Lang::is('fr') ? 'active' : '' ?>" href="<?= Security::e($langSwitch('fr')) ?>">FR</a>
+                    <a class="lang-btn <?= Lang::is('en') ? 'active' : '' ?>" href="<?= Security::e($langSwitch('en')) ?>">EN</a>
+                </div>
                 <span class="badge role-badge">
-                    <?= Auth::isAdmin() ? 'Administrateur' : 'Client' ?>
+                    <?= Security::e(Auth::isAdmin() ? Lang::t('role.admin') : Lang::t('role.client')) ?>
                 </span>
                 <div class="user-chip">
                     <i class="fa-solid fa-circle-user me-1"></i>

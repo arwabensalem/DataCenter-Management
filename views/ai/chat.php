@@ -7,7 +7,6 @@ use App\Helpers\Url;
 
 /** @var list<array<string, mixed>> $dataCenters */
 /** @var int $selectedId */
-/** @var bool $ragOnline */
 /** @var string $csrf */
 
 $baseUrl = Url::base();
@@ -16,25 +15,12 @@ $baseUrl = Url::base();
     <div class="welcome-banner p-4 mb-4">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
-                <h2 class="h4 mb-1"><i class="fa-solid fa-robot me-2"></i>GreenDC AI Advisor</h2>
+                <h2 class="h4 mb-1"><i class="fa-solid fa-comments me-2"></i>Conseil énergétique</h2>
                 <p class="mb-0 opacity-90">
-                    Assistant contextuel — données métier + documents RAG (DOE, ANME, Green Grid…).
+                    Posez vos questions sur le Data Center sélectionné : efficacité, PUE, refroidissement, photovoltaïque.
                 </p>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <?php if ($ragOnline && !empty($llmOnline)): ?>
-                    <span class="badge bg-success">
-                        <i class="fa-solid fa-circle me-1"></i>
-                        LLM <?= Security::e((string) ($llmProvider ?: 'ok')) ?>
-                        <?php if (!empty($llmModel)): ?>
-                            · <?= Security::e((string) $llmModel) ?>
-                        <?php endif; ?>
-                    </span>
-                <?php elseif ($ragOnline): ?>
-                    <span class="badge bg-warning text-dark"><i class="fa-solid fa-database me-1"></i> RAG seul (sans LLM)</span>
-                <?php else: ?>
-                    <span class="badge bg-warning text-dark"><i class="fa-solid fa-triangle-exclamation me-1"></i> Mode fallback</span>
-                <?php endif; ?>
                 <?php if ($selectedId > 0): ?>
                     <a href="<?= Security::e(Url::to('ai/analyze/' . $selectedId)) ?>" class="btn btn-light btn-sm">
                         <i class="fa-solid fa-magnifying-glass-chart me-1"></i> Analyse complète
@@ -45,7 +31,7 @@ $baseUrl = Url::base();
     </div>
 
     <?php if ($dataCenters === []): ?>
-        <div class="alert alert-info">Aucun Data Center accessible. Créez-en un pour activer l'assistant.</div>
+        <div class="alert alert-info">Aucun Data Center accessible. Créez-en un pour activer le conseil.</div>
     <?php else: ?>
     <div class="row g-3">
         <div class="col-lg-3">
@@ -76,16 +62,8 @@ $baseUrl = Url::base();
                 <div id="ai-messages" class="ai-messages flex-grow-1 mb-3">
                     <div class="ai-msg ai-msg-bot">
                         <div class="ai-msg-bubble">
-                            Bonjour — je suis <strong>GreenDC AI Advisor</strong>.
-                            Posez une question sur le Data Center sélectionné.
-                            <?php if (!empty($llmOnline)): ?>
-                                Les réponses sont générées par le LLM
-                                (<em><?= Security::e((string) ($llmModel ?: 'local')) ?></em>)
-                                à partir des calculateurs et des documents RAG.
-                            <?php else: ?>
-                                Le LLM n'est pas encore joignable : activez Ollama ou une clé dans <code>.env</code>.
-                                En attendant, une analyse déterministe reste disponible.
-                            <?php endif; ?>
+                            Bonjour. Sélectionnez un Data Center et posez votre question :
+                            consommation, PUE, refroidissement ou photovoltaïque.
                         </div>
                     </div>
                 </div>

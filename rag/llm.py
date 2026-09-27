@@ -31,10 +31,11 @@ Règles STRICTES :
 11. Ne demande et n'utilise jamais de mots de passe ou données personnelles sensibles.
 
 Format de réponse :
-- Réponds de façon claire, structurée et conversationnelle (pas de dump brut de métriques).
-- Commence par une réponse directe à la question.
-- Puis développe brièvement (faits, causes, actions).
-- Termine par une section « Sources » listant uniquement les documents fournis que tu as utilisés.
+- Ton professionnel, clair et concis (comme un rapport d'ingénierie).
+- N'utilise PAS d'emojis.
+- Évite le markdown excessif : pas de titres ### inutiles ; préfère des phrases courtes et des listes à puces simples si besoin.
+- Gras (**texte**) uniquement pour les chiffres clés ou libellés importants.
+- Termine par une section intitulée « Références » listant uniquement les documents fournis que tu as utilisés.
 """
 
 

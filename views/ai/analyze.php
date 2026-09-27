@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Helpers\Markdown;
 use App\Helpers\Security;
 use App\Helpers\Url;
 
@@ -12,7 +13,6 @@ use App\Helpers\Url;
 
 $dcMetrics = $context['data_center'] ?? [];
 $fmt = static fn(float $v, int $d = 0): string => number_format($v, $d, ',', ' ');
-$fallback = !empty($result['fallback']);
 $answer = (string) ($result['answer'] ?? '');
 $sources = $result['sources'] ?? [];
 ?>
@@ -23,14 +23,8 @@ $sources = $result['sources'] ?? [];
 </div>
 
 <div class="welcome-banner p-4 mb-4">
-    <h2 class="h4 mb-1"><i class="fa-solid fa-magnifying-glass-chart me-2"></i>AI Energy Analysis</h2>
-    <p class="mb-0 opacity-90"><?= Security::e((string) $dataCenter['nom']) ?>
-        <?php if ($fallback): ?>
-            <span class="badge bg-warning text-dark ms-2">Fallback déterministe</span>
-        <?php else: ?>
-            <span class="badge bg-success ms-2">RAG</span>
-        <?php endif; ?>
-    </p>
+    <h2 class="h4 mb-1"><i class="fa-solid fa-magnifying-glass-chart me-2"></i>Analyse énergétique</h2>
+    <p class="mb-0 opacity-90"><?= Security::e((string) $dataCenter['nom']) ?></p>
 </div>
 
 <div class="row g-3 mb-4">
@@ -80,17 +74,17 @@ $sources = $result['sources'] ?? [];
 <div class="form-card mb-4">
     <h3 class="h6 text-uppercase text-muted mb-3">Analyse</h3>
     <div class="ai-answer-body">
-        <?= nl2br(Security::e($answer)) ?>
+        <?= Markdown::toHtml($answer) ?>
     </div>
 </div>
 
 <?php if (!empty($sources)): ?>
 <div class="form-card mb-4">
-    <h3 class="h6 text-uppercase text-muted mb-3">Sources utilisées</h3>
+    <h3 class="h6 text-uppercase text-muted mb-3">Références</h3>
     <ul class="list-unstyled mb-0 ai-sources">
         <?php foreach ($sources as $s): ?>
             <li class="mb-1">
-                📄 <?= Security::e((string) ($s['title'] ?? $s['file'] ?? 'Document')) ?>
+                <?= Security::e((string) ($s['title'] ?? $s['file'] ?? 'Document')) ?>
                 <?php if (!empty($s['page'])): ?>
                     — p.<?= (int) $s['page'] ?>
                 <?php endif; ?>
