@@ -29,12 +29,17 @@ $prioriteIcon = static function (string $p): string {
         <h2 class="h4 mb-0 mt-1"><?= Security::e($dataCenter['nom']) ?></h2>
         <p class="text-muted mb-0"><?= Security::e($dataCenter['localisation']) ?></p>
     </div>
+    <div class="d-flex flex-wrap gap-2">
     <form method="post" action="<?= Security::e(Url::to('recommandations/generer/' . $dataCenter['id'])) ?>">
         <?= Security::csrfField() ?>
         <button type="submit" class="btn btn-brand">
             <i class="fa-solid fa-rotate me-1"></i> Régénérer
         </button>
     </form>
+    <a href="<?= Security::e(Url::to('ai/analyze/' . (int) $dataCenter['id'])) ?>" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-robot me-1"></i> Expliquer avec l'IA
+    </a>
+    </div>
 </div>
 
 <div class="row g-3 mb-4">

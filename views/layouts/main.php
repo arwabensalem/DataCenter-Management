@@ -67,6 +67,9 @@ $user = Auth::user();
             <a class="nav-link <?= Url::is('decision') ? 'active' : '' ?>" href="<?= Security::e(Url::to('decision')) ?>">
                 <i class="fa-solid fa-brain me-2"></i> Aide à la décision
             </a>
+            <a class="nav-link <?= Url::is('ai') ? 'active' : '' ?>" href="<?= Security::e(Url::to('ai')) ?>">
+                <i class="fa-solid fa-robot me-2"></i> AI Advisor
+            </a>
             <a class="nav-link <?= Url::is('exports') ? 'active' : '' ?>" href="<?= Security::e(Url::to('exports')) ?>">
                 <i class="fa-solid fa-file-export me-2"></i> Exports
             </a>

@@ -17,3 +17,14 @@ Desktop.ini
 *.log
 /tmp/
 /cache/
+
+# Python RAG
+rag/.venv/
+rag/venv/
+.venv/
+venv/
+__pycache__/
+*.pyc
+rag/storage/
+rag/logs/
+.pytest_cache/

@@ -10,14 +10,6 @@ $appConfig = require __DIR__ . '/app.php';
 
 date_default_timezone_set($appConfig['timezone']);
 
-if (session_status() === PHP_SESSION_NONE) {
-    ini_set('session.use_strict_mode', '1');
-    ini_set('session.cookie_httponly', '1');
-    ini_set('session.cookie_samesite', 'Lax');
-    ini_set('session.gc_maxlifetime', (string) $appConfig['session_lifetime']);
-    session_start();
-}
-
 /**
  * Autoload PSR-4 simplifié pour le namespace App\.
  *
@@ -48,3 +40,14 @@ spl_autoload_register(static function (string $class): void {
         return;
     }
 });
+
+// Chargement .env (RAG / LLM) — après autoload
+\App\Helpers\Env::load(dirname(__DIR__) . '/.env');
+
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.use_strict_mode', '1');
+    ini_set('session.cookie_httponly', '1');
+    ini_set('session.cookie_samesite', 'Lax');
+    ini_set('session.gc_maxlifetime', (string) $appConfig['session_lifetime']);
+    session_start();
+}

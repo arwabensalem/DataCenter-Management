@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Config;
 
 use App\Controllers\AuthController;
+use App\Controllers\AiController;
 use App\Controllers\CarteController;
 use App\Controllers\DashboardController;
 use App\Controllers\DataCenterController;
@@ -113,6 +114,13 @@ final class Router
         $this->get('exports', [ExportController::class, 'index']);
         $this->get('exports/excel/{id}', [ExportController::class, 'excel']);
         $this->get('exports/pdf/{id}', [ExportController::class, 'pdf']);
+
+        // GreenDC AI Advisor
+        $this->get('ai', [AiController::class, 'index']);
+        $this->post('ai/chat', [AiController::class, 'chat']);
+        $this->post('ai/clear-history', [AiController::class, 'clearHistory']);
+        $this->get('ai/analyze/{id}', [AiController::class, 'analyze']);
+        $this->get('ai/insights/{id}', [AiController::class, 'insights']);
     }
 
     /**

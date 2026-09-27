@@ -30,6 +30,8 @@ $charts = $charts ?? [];
     </div>
 </div>
 
+<?php require dirname(__DIR__) . '/partials/ai_insights.php'; ?>
+
 <?php if (!empty($alerts)): ?>
 <div class="form-card mb-4">
     <h3 class="h6 text-uppercase text-muted mb-3">

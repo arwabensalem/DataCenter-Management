@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Helpers\AlertEngine;
+use App\Helpers\AiContextBuilder;
+use App\Helpers\AiFallback;
 use App\Helpers\Auth;
 use App\Helpers\DashboardAggregator;
 use App\Helpers\PueCalculator;
@@ -75,6 +77,18 @@ class DashboardController extends Controller
             }
         }
 
+        // AI Insights (déterministe rapide — pas d'appel RAG bloquant sur le dashboard)
+        $aiInsights = null;
+        if ($dataCenters !== []) {
+            $focus = $dataCenters[0];
+            $eq = $this->equipementModel->findByDataCenterId((int) $focus['id']);
+            $ipv = $this->installationModel->findByDataCenterId((int) $focus['id']);
+            $recosDc = $this->recommandationModel->findByDataCenterId((int) $focus['id']);
+            $ctx = AiContextBuilder::build($focus, $eq, $ipv, $recosDc, null);
+            $aiInsights = AiFallback::insightsCard($ctx);
+            $aiInsights['data_center_id'] = (int) $focus['id'];
+        }
+
         $this->view('dashboard/index', [
             'title'           => 'Tableau de bord',
             'user'            => Auth::user(),
@@ -86,6 +100,7 @@ class DashboardController extends Controller
             'nbRecos'         => count($recommandations),
             'alerts'          => array_slice($allAlerts, 0, 8),
             'pueList'         => $pueList,
+            'aiInsights'      => $aiInsights,
             'success'         => Security::flash('success'),
             'error'           => Security::flash('error'),
         ]);

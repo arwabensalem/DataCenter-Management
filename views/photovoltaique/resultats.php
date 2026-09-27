@@ -21,6 +21,9 @@ $pctSteg = max(0, 100 - $pctPv);
         </p>
     </div>
     <div class="d-flex gap-2">
+        <a href="<?= Security::e(Url::to('ai?dc=' . (int) $dataCenter['id'])) ?>" class="btn btn-outline-secondary">
+            <i class="fa-solid fa-robot me-1"></i> Questions PV (IA)
+        </a>
         <a href="<?= Security::e(Url::to('photovoltaique/dimensionner/' . $dataCenter['id'])) ?>" class="btn btn-brand">
             <i class="fa-solid fa-rotate me-1"></i> Recalculer
         </a>

@@ -16,7 +16,10 @@ $fmt = static fn(float $v, int $d = 0): string => number_format($v, $d, ',', ' '
 
 <div class="welcome-banner p-4 mb-4">
     <h3 class="h5 mb-2"><i class="fa-solid fa-brain me-2"></i>Conclusion du moteur d'aide à la décision</h3>
-    <p class="mb-0 opacity-90"><?= Security::e($decision['diagnostic']) ?></p>
+    <p class="mb-2 opacity-90"><?= Security::e($decision['diagnostic']) ?></p>
+    <a href="<?= Security::e(Url::to('ai/analyze/' . (int) $dataCenter['id'])) ?>" class="btn btn-light btn-sm">
+        <i class="fa-solid fa-robot me-1"></i> Approfondir avec l'IA
+    </a>
 </div>
 
 <div class="row g-3 mb-4">

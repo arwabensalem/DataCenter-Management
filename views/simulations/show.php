@@ -28,13 +28,20 @@ $deltaClass = static function (float $v, bool $inverse = false): string {
             · <?= Security::e(date('d/m/Y H:i', strtotime($simulation['date_simulation']))) ?>
         </p>
     </div>
-    <form method="post" action="<?= Security::e(Url::to('simulations/' . $simulation['id'] . '/delete')) ?>"
-          onsubmit="return confirm('Supprimer cette simulation ?');">
-        <?= Security::csrfField() ?>
-        <button type="submit" class="btn btn-outline-danger btn-sm">
-            <i class="fa-solid fa-trash me-1"></i> Supprimer
-        </button>
-    </form>
+    <div class="d-flex gap-2">
+        <a href="<?= Security::e(Url::to('ai?dc=' . (int) ($simulation['data_center_id'] ?? 0))) ?>"
+           class="btn btn-outline-secondary btn-sm"
+           title="Demander une explication IA des résultats calculés">
+            <i class="fa-solid fa-robot me-1"></i> Expliquer (IA)
+        </a>
+        <form method="post" action="<?= Security::e(Url::to('simulations/' . $simulation['id'] . '/delete')) ?>"
+              onsubmit="return confirm('Supprimer cette simulation ?');">
+            <?= Security::csrfField() ?>
+            <button type="submit" class="btn btn-outline-danger btn-sm">
+                <i class="fa-solid fa-trash me-1"></i> Supprimer
+            </button>
+        </form>
+    </div>
 </div>
 
 <?php if (!empty($simulation['description'])): ?>

@@ -322,3 +322,91 @@ body {
 
     #wrapper { flex-direction: column; }
 }
+
+/* ---------- AI Advisor ---------- */
+.ai-chat-panel {
+    min-height: 520px;
+}
+
+.ai-messages {
+    max-height: 420px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.25rem;
+}
+
+.ai-msg {
+    display: flex;
+}
+
+.ai-msg-user {
+    justify-content: flex-end;
+}
+
+.ai-msg-bubble {
+    max-width: 85%;
+    padding: 0.75rem 1rem;
+    border-radius: 14px;
+    background: #fff;
+    border: 1px solid rgba(27, 122, 78, 0.12);
+    font-size: 0.95rem;
+    line-height: 1.45;
+}
+
+.ai-msg-user .ai-msg-bubble {
+    background: linear-gradient(135deg, var(--gd-green), var(--gd-blue));
+    color: #fff;
+    border: none;
+}
+
+.ai-sources-inline ul {
+    padding-left: 1.1rem;
+    margin-top: 0.25rem;
+}
+
+.ai-insights-card {
+    background: linear-gradient(135deg, rgba(27, 122, 78, 0.06), rgba(26, 95, 138, 0.08));
+    border: 1px solid rgba(27, 122, 78, 0.12);
+    border-radius: var(--gd-radius);
+    padding: 1.25rem;
+}
+
+.ai-insights-card h3 {
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--gd-green-dark);
+}
+
+.ai-metric-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.ai-metric {
+    background: #fff;
+    border-radius: 10px;
+    padding: 0.75rem;
+    border: 1px solid rgba(15, 61, 46, 0.06);
+}
+
+.ai-metric .label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+}
+
+.ai-metric .value {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--gd-green-dark);
+}
+
+.ai-answer-body {
+    line-height: 1.55;
+    white-space: normal;
+}
