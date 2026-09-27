@@ -8,6 +8,9 @@ Stack : **PHP 8 (MVC OOP)** · **MySQL** · **Bootstrap 5** · **Chart.js** · *
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/arwabensalem/DataCenter-Management)
 
+**Démo en ligne (plan gratuit Render) :** [https://greendc-advisor.onrender.com](https://greendc-advisor.onrender.com)  
+*(cold start possible ~30–60 s si le service était endormi)*
+
 ---
 
 ## Table des matières
