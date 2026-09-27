@@ -51,3 +51,5 @@ if (session_status() === PHP_SESSION_NONE) {
     ini_set('session.gc_maxlifetime', (string) $appConfig['session_lifetime']);
     session_start();
 }
+
+\App\Helpers\Lang::boot();

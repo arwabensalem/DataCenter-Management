@@ -13,6 +13,7 @@ use App\Controllers\DecisionController;
 use App\Controllers\EntrepriseController;
 use App\Controllers\EquipementController;
 use App\Controllers\ExportController;
+use App\Controllers\LangController;
 use App\Controllers\PhotovoltaiqueController;
 use App\Controllers\RapportController;
 use App\Controllers\RecommandationController;
@@ -45,6 +46,9 @@ final class Router
         $this->get('login', [AuthController::class, 'showLogin']);
         $this->post('login', [AuthController::class, 'login']);
         $this->get('logout', [AuthController::class, 'logout']);
+
+        // Langue FR / EN
+        $this->get('lang/{code}', [LangController::class, 'set']);
 
         // Tableau de bord
         $this->get('dashboard', [DashboardController::class, 'index']);
@@ -196,10 +200,16 @@ final class Router
         $params = [];
         foreach ($patternParts as $i => $part) {
             if (preg_match('/^\{([a-zA-Z_]+)\}$/', $part, $m)) {
-                if (!ctype_digit($uriParts[$i])) {
+                $name = $m[1];
+                // IDs numériques par défaut ; codes alphanumériques (ex. lang/{code})
+                if ($name === 'code') {
+                    if (!preg_match('/^[a-zA-Z]{2}$/', $uriParts[$i])) {
+                        return null;
+                    }
+                } elseif (!ctype_digit($uriParts[$i])) {
                     return null;
                 }
-                $params[$m[1]] = $uriParts[$i];
+                $params[$name] = $uriParts[$i];
                 continue;
             }
 
