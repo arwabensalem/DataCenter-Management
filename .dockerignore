@@ -1,0 +1,15 @@
+.git
+.venv
+rag/.venv
+rag/storage
+rag/logs
+rag/__pycache__
+**/__pycache__
+*.pyc
+.env
+.env.local
+*.log
+.idea
+.vscode
+uploads
+agent-transcripts

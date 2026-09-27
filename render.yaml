@@ -1,0 +1,30 @@
+# GreenDC Advisor — Blueprint Render (plan gratuit)
+# Après push GitHub : https://dashboard.render.com/select-repo?type=blueprint
+# Ou bouton « Deploy to Render » dans le README.
+
+services:
+  - type: web
+    name: greendc-advisor
+    runtime: docker
+    plan: free
+    region: frankfurt
+    healthCheckPath: /login
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "0"
+      - key: APP_URL
+        value: ""
+      - key: DB_NAME
+        value: greendc_advisor
+      - key: DB_USER
+        value: greendc
+      - key: DB_PASS
+        generateValue: true
+      - key: SKIP_RAG
+        value: "1"
+      - key: RAG_API_URL
+        value: ""
+      - key: CO2_KG_PER_KWH
+        value: "0.55"

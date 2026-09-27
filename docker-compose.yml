@@ -1,0 +1,20 @@
+# Déploiement local type production (nécessite Docker Desktop)
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      PORT: "8080"
+      APP_ENV: production
+      APP_DEBUG: "0"
+      APP_URL: ""
+      DB_NAME: greendc_advisor
+      DB_USER: greendc
+      DB_PASS: greendc
+      SKIP_RAG: "1"
+    volumes:
+      - greendc_mysql:/var/lib/mysql
+
+volumes:
+  greendc_mysql:
